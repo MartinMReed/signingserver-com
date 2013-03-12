@@ -190,7 +190,7 @@ function f_filterResults(n_win, n_docel, n_body) {
 <?php
 
   function get_sig_types() {
-    $sigTypes = explode(",", VALID_CHART_SIG);
+    $sigTypes = explode(",", VALID_CHART_SIG_COMP);
     unset($sigTypes[array_search("all", $sigTypes)]);
     return $sigTypes;
   }
