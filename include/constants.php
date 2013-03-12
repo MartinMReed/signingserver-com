@@ -1,8 +1,9 @@
 <?php 
   
   // accepted signatures
-  define("VALID_SIG", "rrt,rbb,rcr");
-  define("VALID_CHART_SIG", "rrt,rbb,rcr,all");
+  define("VALID_SIG", "rrt,rbb,rcr,pbk");
+  define("VALID_CHART_SIG", VALID_SIG.",all");
+  define("VALID_CHART_SIG_COMP", "rrt,rbb,rcr,all");
   
   // database connection
   define("DB_HOST", "");
