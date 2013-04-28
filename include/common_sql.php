@@ -213,7 +213,6 @@ function results($key)
 {
   $row['success_day'] = sla($key, "DAY");
   $row['success_month'] = sla($key, "MONTH");
-  $row['success_year'] = sla($key, "YEAR");
   $row['avg_speed'] = avg_speed($key);
   return $row;
 }
