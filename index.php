@@ -64,30 +64,37 @@ function show_log($key, $name) {
   }
 
   if (!$rcc) {
-    $success_rate = $results['success_rate'];
-    $health_color = $success_rate > 95 ? $green : $red;
-    echo "<br />health( <font color=\"$health_color\"><b>$success_rate%</b></font>";
-
     if ($last_checkin['failures'] == 0) {
       $uptime = last_failure($key);
       if (!$uptime) $uptime = first_success($key);
       if ($uptime) {
-        echo " / ";
+        echo "<br />uptime( ";
         echo get_timestamp($uptime);
+        echo " )";
       }
     }
     else {
       $downtime = last_success($key);
       if (!$downtime) $downtime = first_failure($key);
       if ($downtime) {
-        echo " / ";
+        echo "<br />downtime( ";
         echo "<font color=\"$red\">";
         echo get_timestamp($downtime);
-        echo "</font>";
+        echo "</font> )";
       }
     }
 
-    echo " )";
+    $success_day = $results['success_day'];
+    $success_month = $results['success_month'];
+    $success_year = $results['success_year'];
+
+    echo "<br />health( ";
+    $health_color = $success_day > 95 ? $green : $red;
+    echo "<font color=\"$health_color\"><b>$success_day%</b></font> d / ";
+    $health_color = $success_month > 95 ? $green : $red;
+    echo "<font color=\"$health_color\"><b>$success_month%</b></font> m / ";
+    $health_color = $success_year > 95 ? $green : $red;
+    echo "<font color=\"$health_color\"><b>$success_year%</b></font> y )";
   }
 
   $overdue = $last_checkin['time_since'] >= 60 * 10;  
