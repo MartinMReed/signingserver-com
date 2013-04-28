@@ -19,7 +19,7 @@ require("include/common_sql.php");
     <hr>
     <?php show_log('RCR', 'RIM Crypto [RIM]') ?><br />
     <hr>
-    <?php show_log('PBK', 'RDK/PBDT - PlayBook') ?><br />
+    <?php show_log('PBK', 'RDK/PBDT - PlayBook / BB10') ?><br />
     <hr>
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
     Developer support( <b>devsupport@rim.com</b> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
