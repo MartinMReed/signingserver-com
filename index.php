@@ -85,13 +85,17 @@ function show_log($key, $name) {
     }
 
     $success_day = $results['success_day'];
-    $success_month = $results['success_month'];
+//    $success_month = $results['success_month'];
+    $success_year = $results['success_year'];
+    $success_year_start = $results['success_year_start'];
 
     echo "<br />health( ";
     $health_color = $success_day > 95 ? $green : $red;
-    echo "<font color=\"$health_color\"><b>$success_day%</b></font> day / ";
-    $health_color = $success_month > 95 ? $green : $red;
-    echo "<font color=\"$health_color\"><b>$success_month%</b></font> month )";
+    echo "<font color=\"$health_color\"><b>$success_day%</b></font> 1d / ";
+//    $health_color = $success_month > 95 ? $green : $red;
+//    echo "<font color=\"$health_color\"><b>$success_month%</b></font> 1mo / ";
+    $health_color = $success_year > 95 ? $green : $red;
+    echo "<font color=\"$health_color\"><b>$success_year%</b></font> ".$success_year_start." )";
   }
 
   $overdue = $last_checkin['time_since'] >= 60 * 10;  

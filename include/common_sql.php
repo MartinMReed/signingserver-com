@@ -212,8 +212,14 @@ function last_success($key)
 function results($key)
 {
   $row['success_day'] = sla($key, "DAY");
-  $row['success_month'] = sla($key, "MONTH");
+//  $row['success_month'] = sla($key, "MONTH");
+
+  $year = sla($key, "YEAR");
+  $row['success_year'] = $year[0];
+  $row['success_year_start'] = $year[1];
+
   $row['avg_speed'] = avg_speed($key);
+
   return $row;
 }
 
@@ -222,7 +228,8 @@ function sla($key, $time_span)
   global $mysqli;
 
   $statement = $mysqli->prepare("SELECT SUM(result_success),
-    SUM(result_failure)
+    SUM(result_failure),
+    MIN(date)
     FROM ".DB_TABLE."
     WHERE sig_type = ?
     AND date >= (SELECT MIN(date)
@@ -231,12 +238,21 @@ function sla($key, $time_span)
       AND date >= DATE_SUB(NOW(), INTERVAL 1 $time_span));");
   $statement->bind_param("ss", $key, $key);
   $statement->execute();
-  $statement->bind_result($success, $failure);
+  $statement->bind_result($success, $failure, $date);
   $fetched = $statement->fetch();
   $statement->close();
 
   $success_rate = ($success / ($success + $failure)) * 100;
-  return  round($success_rate, ($success_rate >= 99 || $success_rate <= 1) ? 2 : 0);
+  $result = round($success_rate, ($success_rate >= 99 || $success_rate <= 1) ? 2 : 0);
+
+  if (strcmp("YEAR", $time_span) != 0) return $result;
+
+  $date1 = new DateTime();
+  $date2 = new DateTime($date);
+  $diff = $date1->diff($date2);
+  $date = $diff->format('%mmo %dd');
+
+  return array($result, $date);
 }
 
 function get_timestamp($date_diff)
