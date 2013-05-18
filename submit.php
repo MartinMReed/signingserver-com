@@ -9,7 +9,7 @@ if (!strstr(ADDRESS_WHITE_LIST, $_SERVER['REMOTE_ADDR'])) {
   exit_with_error_code(9);
 }
 
-define("TWEETER_THRESHOLD", "2");
+define("TWEETER_THRESHOLD", "3");
 
 require("include/mysql_connect.php");
 require("include/common_sql.php");
@@ -75,7 +75,6 @@ function glue_result_text($results) {
   if (!empty($results_text)) $results_text .= " and ";
   $results_text .= strtoupper($results[count($results) - 1]);
   $results_text .= count($results) > 1 ? " are" : " is";
-  $results_text .= " now";
   return $results_text;
 }
   
