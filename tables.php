@@ -13,7 +13,7 @@ mysql_query("CREATE TABLE ".DB_TABLE." (
   response_time INT NOT NULL,
   cod_size BIGINT UNSIGNED NOT NULL,
   retry INT NOT NULL,
-  date TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+  date TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,
   PRIMARY KEY(id)
   ) engine=InnoDB AUTO_INCREMENT=1;") or die(mysql_error());
 
