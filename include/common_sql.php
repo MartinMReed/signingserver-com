@@ -119,7 +119,7 @@ function last_checkin($key)
 {
   global $mysqli;
 
-  $statement = $mysqli->prepare("SELECT date,
+  $statement = $mysqli->prepare("SELECT TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP, `date`)) as date,
     result_failure,
     response_time,
     cod_count
@@ -140,7 +140,7 @@ function last_checkin($key)
   }
 
   $row['valid'] = !empty($row['date']);
-  $row['time_since'] = time() - strtotime($row['date']);
+  $row['time_since'] = $row['date'];
   $row['speed'] = sprintf("%01.2f", ($response_time / 1000) / $cod_count, 2);
   return $row;
 }
