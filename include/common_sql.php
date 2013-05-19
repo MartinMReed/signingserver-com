@@ -51,6 +51,41 @@ function failures($key, $failures)
   return $count;
 }
 
+function outliers($samples)
+{
+  sort($samples);
+  $sample_count = count($samples);
+
+  $uqi = ($sample_count-1) * 0.75;
+  if (floor($uqi) != $uqi)
+  {
+    $uq = ($samples[floor($uqi)] + $samples[ceil($uqi)]) / 2;
+  }
+  else
+  {
+    $uq = $samples[$uqi];
+  }
+
+  $lqi = ($sample_count-1) * 0.25;
+  if (floor($lqi) != $lqi)
+  {
+    $lq = ($samples[floor($lqi)] + $samples[ceil($lqi)]) / 2;
+  }
+  else
+  {
+    $lq = $samples[$lqi];
+  }
+
+  $iqr = $uq - $lq;
+
+  $results = array();
+
+  $lr = $lq-(1.5*$iqr);
+  $ur = $uq+(1.5*$iqr);
+
+  return array($lr, $ur);
+}
+
 function avg_speed($key)
 {
   global $mysqli;
@@ -74,36 +109,13 @@ function avg_speed($key)
 
   $statement->close();
   
-  sort($samples);
-  $sample_count = count($samples);
+  $outliers = outliers($samples);
+  $lr = $outliers[0];
+  $ur = $outliers[1];
 
-  $uqi = ($sample_count-1) * 0.75;
-  if (floor($uqi) != $uqi)
-  {
-    $uq = ($samples[floor($uqi)] + $samples[ceil($uqi)]) / 2;
-  }
-  else
-  {
-    $uq = $samples[$uqi];
-  }
-
-  $lqi = ($sample_count-1) * 0.25;
-  if (floor($lqi) != $lqi)
-  {
-    $lq = ($samples[floor($lqi)] + $samples[ceil($lqi)]) / 2;
-  }
-  else
-  {
-    $lq = $samples[$lqi];
-  }
+  $results = array(); 
   
-  $iqr = $uq - $lq;
-  
-  $results = array();
-  
-  $lr = $lq-(1.5*$iqr);
-  $ur = $uq+(1.5*$iqr);
-  for ($i = 0; $i < $sample_count; $i++)
+  for ($i = 0; $i < count($samples); $i++)
   {
     if ($samples[$i] >= $lr && $samples[$i] <= $ur)
     {
