@@ -5,6 +5,9 @@
   define("VALID_CHART_SIG", VALID_SIG.",all");
   define("VALID_CHART_SIG_COMP", "rrt,rbb,rcr,all");
   
+  // apikey for submit.php
+  define("SUBMISSION_KEY", "");
+  
   // database connection
   define("DB_HOST", "");
   define("DB_USER", "");

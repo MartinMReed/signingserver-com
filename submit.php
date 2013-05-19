@@ -4,8 +4,9 @@ if(!fsockopen("www.google.com", 80)){
   exit_with_error_code(10);
 }
 
-define("ADDRESS_WHITE_LIST", "127.0.0.1,192.168.1.10");
-if (!strstr(ADDRESS_WHITE_LIST, $_SERVER['REMOTE_ADDR'])) {
+require("include/constants.php");
+
+if (strcmp(SUBMISSION_KEY, $_GET['apikey']) != 0) {
   exit_with_error_code(9);
 }
 
