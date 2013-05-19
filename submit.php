@@ -1,13 +1,14 @@
 <?php
 
-if(!fsockopen("www.google.com", 80)){
-  exit_with_error_code(10);
-}
-
 require("include/constants.php");
 
 if (strcmp(SUBMISSION_KEY, $_GET['apikey']) != 0) {
-  exit_with_error_code(9);
+  header("HTTP/1.0 404 Not Found");
+  exit;
+}
+
+if(!fsockopen("www.google.com", 80)){
+  exit_with_error_code(10);
 }
 
 define("TWEETER_THRESHOLD", "3");
