@@ -20,5 +20,8 @@
   define("CONSUMER_SECRET", "");
   define("OAUTH_TOKEN", "");
   define("OAUTH_SECRET", "");
+  
+  // number of failures before it goes to twitter
+  define("TWEETER_THRESHOLD", "3");
 
 ?>

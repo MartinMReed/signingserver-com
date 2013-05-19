@@ -18,8 +18,6 @@ $json = json_decode($json);
 $results = $json->{'results'};
 if(!$results) exit_with_error_code(8);
 
-define("TWEETER_THRESHOLD", "3");
-
 require("include/mysql_connect.php");
 require("include/common_sql.php");
 require("tweet/twitteroauth.php");
