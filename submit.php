@@ -32,7 +32,9 @@ foreach ($results as $result) {
 }
 
 $control = load_controls();
-store_results($control);
+$control = json_encode($control);
+$control = json_decode($control);
+store_result($control);
 
 echo "Successfully saved results to isthesigningserverdown.com for ".implode($signerIds, ", ");
 
