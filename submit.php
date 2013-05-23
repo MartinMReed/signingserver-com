@@ -31,9 +31,58 @@ foreach ($results as $result) {
   store_result($result);
 }
 
+$control = load_controls();
+store_results($control);
+
 echo "Successfully saved results to isthesigningserverdown.com for ".implode($signerIds, ", ");
 
 exit;
+
+function load_controls()
+{
+  $controls = array( "http://google.com/robots.txt",
+                     "http://amazon.com/robots.txt",
+                     "http://aws.amazon.com/robots.txt",
+                     "http://youtube.com/robots.txt");
+  
+  $duration = 0;
+  $size = 0;
+  $count = 0;
+
+  foreach ($controls as $control)
+  {
+    $start = round(microtime(true) * 1000);
+    $data = get_data($control);
+    $end = round(microtime(true) * 1000);
+
+    if (strlen($data) == 0) continue;
+
+    $count++;
+    $duration += ($end-$start);
+    $size += strlen($data);
+  }
+
+  $result = array();
+  $result['signerId'] = "CTL";
+  $result['count'] = $count;
+  $result['success'] = $count;
+  $result['failure'] = 0;
+  $result['duration'] = $duration;
+  $result['size'] = $size;
+  $result['retry'] = 0;
+  return $result;
+}
+
+function get_data($url)
+{
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+  $data = curl_exec($ch);
+  curl_close($ch);
+  return $data;
+}
 
 function exit_with_error_code($exitCode) {
   header("HTTP/1.0 400 Bad Request (".$exitCode.")");
