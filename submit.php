@@ -71,7 +71,7 @@ function load_controls()
   $result['failure'] = 0;
   $result['duration'] = $duration;
   $result['size'] = $size;
-  $result['retry'] = 0;
+  $result['retries'] = 0;
   return $result;
 }
 
@@ -158,13 +158,13 @@ function store_result($result) {
   $sigType = strtolower($result->{'signerId'});
 
   $statement = $mysqli->prepare("INSERT INTO ".DB_TABLE."
-    SET sig_type=?,
-    cod_count=?,
-    result_success=?,
-    result_failure=?,
-    response_time=?,
-    cod_size=?,
-    retry=?;");
+    SET signature=?,
+    count=?,
+    successes=?,
+    failures=?,
+    duration=?,
+    size=?,
+    retries=?;");
   $statement->bind_param('siiiiii',
     $sigType,
     $result->{'count'},
@@ -172,7 +172,7 @@ function store_result($result) {
     $result->{'failure'},
     $result->{'duration'},
     $result->{'size'},
-    $result->{'retry'});
+    $result->{'retries'});
   $statement->execute();
   $statement->close();
 }

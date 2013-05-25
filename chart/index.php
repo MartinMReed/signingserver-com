@@ -121,28 +121,28 @@ function chartylolol()
             name: 'Success',
             color: 'rgba(119, 152, 191, 0.50)',
             data: ";
-    populate_data($sigType, "result_failure = 0");
+    populate_data($sigType, "failures = 0");
     echo ",
             type: 'scatter'
         }, {
             name: 'Failure',
             color: 'rgba(223, 83, 83, 0.90)',
             data: ";
-    populate_data($sigType, "result_failure != 0");
+    populate_data($sigType, "failures != 0");
     echo ",
             type: 'scatter'
         }, {
             name: 'Over Capacity',
             color: 'rgba(223, 83, 3, 0.90)',
             data: ";
-    populate_data($sigType, "result_failure = 0 AND retry != 0");
+    populate_data($sigType, "failures = 0 AND retries != 0");
     echo ",
             type: 'scatter'
         }";
   }
   else
   {
-    $sigTypes = get_sig_types();
+    $sigTypes = get_signatures();
     $colors = array("0,173,239", "140,198,62", "254,164,15");
     for ($i = 0; $i < count($sigTypes); $i++)
     {
@@ -151,7 +151,7 @@ function chartylolol()
             name: '".strtoupper($sigTypes[$i])."',
             color: 'rgba(".$colors[$i].", 0.50)',
             data: ";
-      populate_data($sigTypes[$i], "cod_count != 0");
+      populate_data($sigTypes[$i], "count != 0");
       echo ",
             type: 'scatter'
         }";
@@ -195,7 +195,7 @@ function f_filterResults(n_win, n_docel, n_body)
 </html>
 <?php
 
-  function get_sig_types()
+  function get_signatures()
   {
     $sigTypes = explode(",", VALID_CHART_SIG_COMP);
     unset($sigTypes[array_search("all", $sigTypes)]);
@@ -208,10 +208,10 @@ function f_filterResults(n_win, n_docel, n_body)
     global $allTypes;
     
     $result = mysql_query("SELECT date,
-      cod_count,
-      response_time
+      count,
+      duration
       FROM ".DB_TABLE."
-      WHERE sig_type = '$sigType'
+      WHERE signature = '$sigType'
       AND $where
       AND date >= DATE_SUB(NOW(), INTERVAL $days DAY);") or die(mysql_error());
       
@@ -222,7 +222,7 @@ function f_filterResults(n_win, n_docel, n_body)
     
     for ($i = 0; $row = mysql_fetch_assoc($result); $i++)
     {
-      $response = ($row["response_time"] / 1000 ) / $row["cod_count"];
+      $response = ($row["duration"] / 1000 ) / $row["count"];
       array_push($rows, $row);
       array_push($samples, $response);
     }
@@ -237,7 +237,7 @@ function f_filterResults(n_win, n_docel, n_body)
 
     foreach ($rows as $row)
     {
-      $response = ($row["response_time"] / 1000 ) / $row["cod_count"];
+      $response = ($row["duration"] / 1000 ) / $row["count"];
       if ($response < $lr || $response > $ur) continue;
 
       if ($added_count > 0) echo ",";
@@ -260,16 +260,16 @@ function f_filterResults(n_win, n_docel, n_body)
 
     if (strcmp("all", $sigType) != 0)
     {
-      $where = "sig_type = '$sigType'";
+      $where = "signature = '$sigType'";
     }
     else
     {
-      $sigTypes = get_sig_types();
-      $where = "sig_type in ('".implode("','", $sigTypes)."')";
+      $sigTypes = get_signatures();
+      $where = "signature in ('".implode("','", $sigTypes)."')";
     }
 
-    $result = mysql_query("SELECT cod_count,
-      response_time
+    $result = mysql_query("SELECT count,
+      duration
       FROM ".DB_TABLE."
       WHERE $where
       AND date >= DATE_SUB(NOW(), INTERVAL $days DAY);") or die(mysql_error());
@@ -278,7 +278,7 @@ function f_filterResults(n_win, n_docel, n_body)
 
     for ($i = 0; $row = mysql_fetch_assoc($result); $i++)
     {
-      $response = ($row["response_time"] / 1000 ) / $row["cod_count"];
+      $response = ($row["duration"] / 1000 ) / $row["count"];
       array_push($samples, $response);
     }
 

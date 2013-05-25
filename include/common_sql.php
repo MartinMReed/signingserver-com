@@ -40,9 +40,9 @@ function failures($key, $failures)
     FROM ".DB_TABLE."
     WHERE id > (SELECT MAX(id)
       FROM ".DB_TABLE."
-      WHERE result_failure ".($failures?"=":"!=")." 0
-      AND sig_type = ?)
-    AND sig_type = ?;");
+      WHERE failures ".($failures?"=":"!=")." 0
+      AND signature = ?)
+    AND signature = ?;");
   $statement->bind_param("ss", $key, $key);
   $statement->execute();
   $statement->bind_result($count);
@@ -90,21 +90,21 @@ function avg_speed($key)
 {
   global $mysqli;
   
-  $statement = $mysqli->prepare("SELECT cod_count,
-      response_time
+  $statement = $mysqli->prepare("SELECT count,
+      duration
       FROM ".DB_TABLE."
-      WHERE sig_type = ?
+      WHERE signature = ?
       AND date >= DATE_SUB(NOW(), INTERVAL 24 HOUR);");
   $statement->bind_param("s", $key);
   $statement->execute();
-  $statement->bind_result($cod_count, $response_time);
+  $statement->bind_result($count, $duration);
   $fetched = $statement->fetch();
   
   $samples = array();
   
   for ($i = 0; $row = $statement->fetch(); $i++)
   {
-    $samples[$i] = ($response_time / 1000) / $cod_count;
+    $samples[$i] = ($duration / 1000) / $count;
   }
 
   $statement->close();
@@ -132,16 +132,16 @@ function last_checkin($key)
   global $mysqli;
 
   $statement = $mysqli->prepare("SELECT TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP, `date`)) as date,
-    result_failure,
-    response_time,
-    cod_count
+    failures,
+    duration,
+    count
     FROM ".DB_TABLE."
     WHERE id = (SELECT MAX(id)
       FROM ".DB_TABLE."
-      WHERE sig_type = ?);");
+      WHERE signature = ?);");
   $statement->bind_param("s", $key);
   $statement->execute();
-  $statement->bind_result($row['date'], $row['failures'], $response_time, $cod_count);
+  $statement->bind_result($row['date'], $row['failures'], $duration, $count);
   $fetched = $statement->fetch();
   $statement->close();
 
@@ -153,7 +153,7 @@ function last_checkin($key)
 
   $row['valid'] = !empty($row['date']);
   $row['time_since'] = $row['date'];
-  $row['speed'] = sprintf("%01.2f", ($response_time / 1000) / $cod_count, 2);
+  $row['speed'] = sprintf("%01.2f", ($duration / 1000) / $count, 2);
   return $row;
 }
 
@@ -163,8 +163,8 @@ function first_failure($key)
 
   $statement = $mysqli->prepare("SELECT MIN(date)
     FROM ".DB_TABLE."
-    WHERE sig_type = ?
-    AND result_failure != 0;");
+    WHERE signature = ?
+    AND failures != 0;");
   $statement->bind_param("s", $key);
   $statement->execute();
   $statement->bind_result($date);
@@ -179,8 +179,8 @@ function last_failure($key)
 
   $statement = $mysqli->prepare("SELECT MAX(date)
     FROM ".DB_TABLE."
-    WHERE sig_type = ?
-    AND result_failure != 0;");
+    WHERE signature = ?
+    AND failures != 0;");
   $statement->bind_param("s", $key);
   $statement->execute();
   $statement->bind_result($date);
@@ -195,8 +195,8 @@ function first_success($key)
 
   $statement = $mysqli->prepare("SELECT MIN(date)
     FROM ".DB_TABLE."
-    WHERE sig_type = ?
-    AND result_failure = 0;");
+    WHERE signature = ?
+    AND failures = 0;");
   $statement->bind_param("s", $key);
   $statement->execute();
   $statement->bind_result($date);
@@ -211,8 +211,8 @@ function last_success($key)
 
   $statement = $mysqli->prepare("SELECT MAX(date)
     FROM ".DB_TABLE."
-    WHERE sig_type = ?
-    AND result_failure = 0;");
+    WHERE signature = ?
+    AND failures = 0;");
   $statement->bind_param("s", $key);
   $statement->execute();
   $statement->bind_result($date);
@@ -239,14 +239,14 @@ function sla($key, $time_span)
 {
   global $mysqli;
 
-  $statement = $mysqli->prepare("SELECT SUM(result_success),
-    SUM(result_failure),
+  $statement = $mysqli->prepare("SELECT SUM(successes),
+    SUM(failures),
     MIN(date)
     FROM ".DB_TABLE."
-    WHERE sig_type = ?
+    WHERE signature = ?
     AND date >= (SELECT MIN(date)
       FROM ".DB_TABLE."
-      WHERE sig_type = ?
+      WHERE signature = ?
       AND date >= DATE_SUB(NOW(), INTERVAL 1 $time_span));");
   $statement->bind_param("ss", $key, $key);
   $statement->execute();
