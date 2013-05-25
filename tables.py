@@ -14,16 +14,17 @@ try:
 except IOError:
     pass
 
-create_table = 'CREATE TABLE %s (\n\
-  id INT PRIMARY KEY,\n\
-  date TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,\n\
-  signature VARCHAR NOT NULL,\n\
-  count INT NOT NULL,\n\
-  size BIGINT UNSIGNED NOT NULL,\n\
-  successes INT NOT NULL,\n\
-  failures INT NOT NULL,\n\
-  duration INT NOT NULL,\n\
-  retries INT NOT NULL\n\
+create_table = 'CREATE TABLE "%s" (\n\
+  "id" INT NOT NULL,\n\
+  "date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n\
+  "signature" VARCHAR NOT NULL,\n\
+  "count" INT NOT NULL,\n\
+  "size" BIGINT UNSIGNED NOT NULL,\n\
+  "successes" INT NOT NULL,\n\
+  "failures" INT NOT NULL,\n\
+  "duration" INT NOT NULL,\n\
+  "retries" INT NOT NULL,\n\
+  PRIMARY KEY ("id")\n\
   );' % DB_TABLE
 
 connection = None
