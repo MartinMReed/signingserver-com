@@ -9,10 +9,10 @@ database_file = 'stats.db'
 DB_TABLE = 'stats'
 
 try:
-	with open(database_file): pass
-	exit('file already exists')
+    with open(database_file): pass
+    exit('file already exists')
 except IOError:
-	pass
+    pass
 
 create_table = 'CREATE TABLE %s (\n\
   id INT PRIMARY KEY,\n\
@@ -30,11 +30,11 @@ connection = None
 
 try:
 
-	connection = sqlite3.connect(database_file)
-	cursor = connection.cursor()
-	cursor.execute(create_table)
-	
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute(create_table)
+    
 finally:
-	
-	if connection:
-		connection.close()
+    
+    if connection:
+        connection.close()
