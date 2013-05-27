@@ -1,8 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys, os
+working_directory = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, working_directory)
+
 import web
-import os
+web.config.debug = True
+
+import tables as _tables
 
 urls = (
     '/tables', 'tables'
@@ -13,8 +19,8 @@ application = app.wsgifunc()
 
 class tables:
     def GET(self):
-#        os.system('tables.py')
-        return 'd'
+        result = _tables.create_table(working_directory)
+        return result
 
 def notfound():
     status = '404 Not Found'
