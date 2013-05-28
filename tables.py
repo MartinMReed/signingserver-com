@@ -3,9 +3,7 @@
 
 import os
 import sqlite3
-
-DB_FILENAME = os.path.join('work', 'stats.db')
-DB_TABLE = 'stats'
+import settings
 
 statement = 'CREATE TABLE %s (\n\
   id INT PRIMARY KEY,\n\
@@ -17,11 +15,11 @@ statement = 'CREATE TABLE %s (\n\
   failures INT NOT NULL,\n\
   duration INT NOT NULL,\n\
   retries INT NOT NULL\n\
-  );' % DB_TABLE
+  );' % settings.DB_TABLE
 
 def create_table(directory):
     
-    database_file = os.path.join(directory, DB_FILENAME)
+    database_file = os.path.join(directory, settings.DB_FILENAME)
     
     try:
         with open(database_file):
