@@ -31,19 +31,16 @@ def create_table(directory):
     connection = None
     
     try:
-    
         connection = sqlite3.connect(database_file)
         cursor = connection.cursor()
         cursor.execute(statement)
         return True
-    
+    except:
+        return False
     finally:
-    
         if connection:
             connection.close()
-    
-    return False
 
-#if __name__ == '__main__':
-#    directory = os.path.abspath(os.path.dirname(__file__)
-#    create_table()
+if __name__ == '__main__':
+    directory = os.path.abspath(os.path.dirname(__file__))
+    create_table(directory)
