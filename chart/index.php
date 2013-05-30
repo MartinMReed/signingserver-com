@@ -143,7 +143,7 @@ function chartylolol()
   else
   {
     $sigTypes = get_signatures();
-    $colors = array("0,173,239", "140,198,62", "254,164,15");
+    $colors = array("0,173,239", "140,198,62", "254,164,15", "255,16,16");
     for ($i = 0; $i < count($sigTypes); $i++)
     {
       if ($i > 0) echo ",";
