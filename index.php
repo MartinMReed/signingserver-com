@@ -13,6 +13,8 @@
     <hr>
     <?php show_log('RCR', 'RIM Crypto') ?><br />
     <hr>
+    <?php show_log('RCC', 'Crypto Certicom') ?><br />
+    <hr>
     <?php show_log('PBK', 'RDK/PBDT - PlayBook / BB10') ?><br />
     <hr>
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
