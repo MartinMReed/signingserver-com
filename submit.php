@@ -35,11 +35,46 @@ echo "Successfully saved results to isthesigningserverdown.com for ".implode($si
 
 exit;
 
+<<<<<<< HEAD
 function exit_with_error_code($exitCode)
 {
+<<<<<<< HEAD
 	header("HTTP/1.0 400 Bad Request (".$exitCode.")");
 	echo $exitCode;
 	exit($exitCode);
+=======
+  $controls = array( "http://google.com/robots.txt",
+                     "http://amazon.com/robots.txt",
+                     "http://aws.amazon.com/robots.txt",
+                     "http://youtube.com/robots.txt");
+  
+  $duration = 0;
+  $size = 0;
+  $count = 0;
+
+  foreach ($controls as $control)
+  {
+    $start = round(microtime(true) * 1000);
+    $data = get_data($control);
+    $end = round(microtime(true) * 1000);
+
+    if (strlen($data) == 0) continue;
+
+    $count++;
+    $duration += ($end-$start);
+    $size += strlen($data);
+  }
+
+  $result = array();
+  $result['signerId'] = "CTL";
+  $result['count'] = $count;
+  $result['success'] = $count;
+  $result['failure'] = 0;
+  $result['duration'] = $duration;
+  $result['size'] = $size;
+  $result['retry'] = 0;
+  return $result;
+>>>>>>> 5f2c0a2... Update submit.php
 }
 
 function tweet_results($results)
@@ -68,6 +103,40 @@ function tweet_results($results)
 	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET);
 	$content = $connection->get('account/verify_credentials');
 	$connection->post('statuses/update', array('status' => $tweet));
+=======
+function exit_with_error_code($exitCode) {
+  header("HTTP/1.0 400 Bad Request (".$exitCode.")");
+  echo $exitCode;
+  exit($exitCode);
+}
+
+function tweet_results($results) {
+
+  $now_succeeding = array();
+  $now_failing = array();
+
+  foreach ($results as $result) {
+    sort_result($result, $now_succeeding, $now_failing);
+  }
+  
+  if (count($now_succeeding) == 0 && count($now_failing) == 0) {
+    return;
+  }
+  
+  $tweet = "At ".date('H:i (T)').":";
+  
+  if (count($now_succeeding) > 0) {
+    $tweet .= " ".glue_result_text($now_succeeding)." succeeding.";
+  }
+  
+  if (count($now_failing) > 0) {
+    $tweet .= " ".glue_result_text($now_failing)." failing.";
+  }
+
+  $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET);
+  $content = $connection->get('account/verify_credentials');
+  $connection->post('statuses/update', array('status' => $tweet));
+>>>>>>> 18b2af7... Update submit.php
 }
 
 function glue_result_text($results)
@@ -99,6 +168,7 @@ function sort_result($result, &$now_succeeding, &$now_failing)
 	}
 }
 
+<<<<<<< HEAD
 function store_result($result)
 {
 	global $mysqli;
@@ -123,6 +193,32 @@ function store_result($result)
 		$result->{'retry'});
 	$statement->execute();
 	$statement->close();
+=======
+function store_result($result) {
+
+  global $mysqli;
+  
+  $sigType = strtolower($result->{'signerId'});
+
+  $statement = $mysqli->prepare("INSERT INTO ".DB_TABLE."
+    SET signature=?,
+    count=?,
+    successes=?,
+    failures=?,
+    duration=?,
+    size=?,
+    retries=?;");
+  $statement->bind_param('siiiiii',
+    $sigType,
+    $result->{'count'},
+    $result->{'success'},
+    $result->{'failure'},
+    $result->{'duration'},
+    $result->{'size'},
+    $result->{'retry'});
+  $statement->execute();
+  $statement->close();
+>>>>>>> 5f2c0a2... Update submit.php
 }
 
 ?>
