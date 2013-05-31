@@ -27,7 +27,7 @@ require("include/common_sql.php");
     Developer support( <a href="http://supportforums.blackberry.com/t5/Application-Platforms/ct-p/app_plat"><b>Support Forums</b></a> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
     See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.
     <hr>
-    <a href="http://twitter.com/SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/hardisonbrewing/signingserver-com"><img src="github_30.png"></a> <a href="stats.sql"><img src="sql_30.png"></a>
+    <a href="http://twitter.com/SigningServer" title="@SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/hardisonbrewing/signingserver-com" title="Source on GitHub"><img src="github_30.png"></a> <a href="stats.sql" title="Download Database"><img src="sql_30.png"></a>
   </body>
 </html>
 <?php
