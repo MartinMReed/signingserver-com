@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 // accepted signatures
@@ -24,6 +23,7 @@ define("OAUTH_SECRET", "");
 
 // number of failures before it goes to twitter
 define("TWEETER_THRESHOLD", "3");
+<<<<<<< HEAD
 =======
 <?php 
   
@@ -51,5 +51,7 @@ define("TWEETER_THRESHOLD", "3");
   // number of failures before it goes to twitter
   define("TWEETER_THRESHOLD", "3");
 >>>>>>> 7c963a2... Update constants.php
+=======
+>>>>>>> c86e1e4... formatting
 
 ?>

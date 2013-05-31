@@ -35,7 +35,6 @@ echo "Successfully saved results to isthesigningserverdown.com for ".implode($si
 
 exit;
 
-<<<<<<< HEAD
 function exit_with_error_code($exitCode)
 {
 <<<<<<< HEAD
@@ -103,6 +102,7 @@ function tweet_results($results)
 	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET);
 	$content = $connection->get('account/verify_credentials');
 	$connection->post('statuses/update', array('status' => $tweet));
+<<<<<<< HEAD
 =======
 function exit_with_error_code($exitCode) {
   header("HTTP/1.0 400 Bad Request (".$exitCode.")");
@@ -137,6 +137,8 @@ function tweet_results($results) {
   $content = $connection->get('account/verify_credentials');
   $connection->post('statuses/update', array('status' => $tweet));
 >>>>>>> 18b2af7... Update submit.php
+=======
+>>>>>>> c86e1e4... formatting
 }
 
 function glue_result_text($results)
@@ -168,7 +170,6 @@ function sort_result($result, &$now_succeeding, &$now_failing)
 	}
 }
 
-<<<<<<< HEAD
 function store_result($result)
 {
 	global $mysqli;
@@ -193,6 +194,7 @@ function store_result($result)
 		$result->{'retry'});
 	$statement->execute();
 	$statement->close();
+<<<<<<< HEAD
 =======
 function store_result($result) {
 
@@ -219,6 +221,8 @@ function store_result($result) {
   $statement->execute();
   $statement->close();
 >>>>>>> 5f2c0a2... Update submit.php
+=======
+>>>>>>> c86e1e4... formatting
 }
 
 ?>
