@@ -84,7 +84,8 @@ function avg_speed($key)
 	$statement = $mysqli->prepare("SELECT count,
 		duration
 		FROM ".DB_TABLE."
-		WHERE signature = ?;");
+		WHERE signature = ?
+                AND date >= DATE_SUB(NOW(), INTERVAL 24 HOUR);");
 	$statement->bind_param("s", $key);
 	$statement->execute();
 	$statement->bind_result($count, $duration);
