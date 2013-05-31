@@ -1,3 +1,9 @@
+<?php
+
+require("include/mysql_connect.php");
+require("include/common_sql.php");
+
+?>
 <html>
   <head>
     <title>Is the signing server down?</title>
@@ -19,15 +25,12 @@
     <hr>
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
     Developer support( <a href="http://supportforums.blackberry.com/t5/Application-Platforms/ct-p/app_plat"><b>Support Forums</b></a> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
-    See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.<!--http://us.blackberry.com/developers/javaappdev/codekeys.jsp-->
+    See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.
     <hr>
     <a href="http://twitter.com/SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/hardisonbrewing/signingserver-com"><img src="github_30.png"></a>
   </body>
 </html>
 <?php
-
-require("include/mysql_connect.php");
-require("include/common_sql.php");
 
 function show_log($key, $name)
 {
