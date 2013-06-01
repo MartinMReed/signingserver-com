@@ -5,17 +5,17 @@ import os
 import sqlite3
 import settings
 
-statement = 'CREATE TABLE %s (\n\
-  id INT PRIMARY KEY,\n\
-  date TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,\n\
-  signature VARCHAR NOT NULL,\n\
-  count INT NOT NULL,\n\
-  size BIGINT UNSIGNED NOT NULL,\n\
-  successes INT NOT NULL,\n\
-  failures INT NOT NULL,\n\
-  duration INT NOT NULL,\n\
-  retries INT NOT NULL\n\
-  );' % settings.DB_TABLE
+statement = 'CREATE TABLE %s (\
+    id INT PRIMARY KEY,\
+    date TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,\
+    signature VARCHAR NOT NULL,\
+    count INT NOT NULL,\
+    size BIGINT UNSIGNED NOT NULL,\
+    successes INT NOT NULL,\
+    failures INT NOT NULL,\
+    duration INT NOT NULL,\
+    retries INT NOT NULL\
+    );' % settings.DB_TABLE
 
 def create_table(directory):
     
@@ -32,6 +32,8 @@ def create_table(directory):
         connection = sqlite3.connect(database_file)
         cursor = connection.cursor()
         cursor.execute(statement)
+#        cursor.execute("insert into stats values (1, CURRENT_TIMESTAMP, 'RCR', 10, 5000, 10, 0, 4000, 0)")
+#        connection.commit()
         return True
     except:
         return False

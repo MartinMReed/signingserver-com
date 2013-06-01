@@ -9,9 +9,13 @@ import web
 web.config.debug = True
 
 import tables as _tables
+import sql as _sql
+import settings
 
 urls = (
-    '/tables', 'tables'
+    '/tables', 'tables',
+    '/status', 'status',
+    '/sql', 'sql'
     )
 
 app = web.application(urls, globals())
@@ -19,8 +23,19 @@ application = app.wsgifunc()
 
 class tables:
     def GET(self):
-        result = _tables.create_table(working_directory)
-        return result
+        return  _tables.create_table(working_directory)
+
+class sql:
+    def GET(self):
+        __sql = _sql.sql(working_directory)
+        sigs = ('rcr','rbb')
+        return __sql.status_all(sigs)
+
+class status:
+    def GET(self):
+        __sql = _sql.sql(working_directory)
+        sigs = ('rcr','rbb')
+        return __sql.status_all(sigs)
 
 def notfound():
     status = '404 Not Found'

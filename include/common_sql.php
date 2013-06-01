@@ -85,7 +85,7 @@ function avg_speed($key)
 		duration
 		FROM ".DB_TABLE."
 		WHERE signature = ?
-                AND date >= DATE_SUB(NOW(), INTERVAL 24 HOUR);");
+		AND date >= DATE_SUB(NOW(), INTERVAL 24 HOUR);");
 	$statement->bind_param("s", $key);
 	$statement->execute();
 	$statement->bind_result($count, $duration);
@@ -119,7 +119,8 @@ function last_checkin($key)
 {
 	global $mysqli;
 	
-	$statement = $mysqli->prepare("SELECT TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP, `date`)) as date,
+	$statement = $mysqli->prepare("SELECT TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP, `date`)) as time_since,
+		date,
 		failures,
 		duration,
 		count
@@ -129,7 +130,7 @@ function last_checkin($key)
 			WHERE signature = ?);");
 	$statement->bind_param("s", $key);
 	$statement->execute();
-	$statement->bind_result($row['date'], $row['failures'], $duration, $count);
+	$statement->bind_result($row['time_since'], $row['date'], $row['failures'], $duration, $count);
 	$fetched = $statement->fetch();
 	$statement->close();
 	
@@ -140,7 +141,6 @@ function last_checkin($key)
 	}
 	
 	$row['valid'] = !empty($row['date']);
-	$row['time_since'] = $row['date'];
 	$row['speed'] = sprintf("%01.2f", ($duration / 1000) / $count, 2);
 	return $row;
 }
