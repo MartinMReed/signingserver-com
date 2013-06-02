@@ -5,5 +5,4 @@ Run `tables.php` to create the stats table.
 ## Related Projects
 [Custom Signature Tool](https://github.com/hardisonbrewing/signingserver)  
 [Signing Library](https://github.com/hardisonbrewing/narst)  
-[Arduino Sign](https://github.com/hardisonbrewing/signingserver-arduino)  
 [BlackBerry JAVA App](https://github.com/hardisonbrewing/signingserver-bb)
