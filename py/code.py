@@ -28,13 +28,13 @@ class tables:
 class sql:
     def GET(self):
         __sql = _sql.sql(working_directory)
-        sigs = ('rcr','rbb')
-        return __sql.status_all(sigs)
+        sigs = settings.VALID_SIG.split(',')
+        return __sql.recurring_status('rcr', False)
 
 class status:
     def GET(self):
         __sql = _sql.sql(working_directory)
-        sigs = ('rcr','rbb')
+        sigs = settings.VALID_SIG.split(',')
         return __sql.status_all(sigs)
 
 def notfound():

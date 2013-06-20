@@ -31,19 +31,21 @@ class sql(object):
         output.append('"version":1')
         output.append(',"sigs":[')
         
+        count = 0
         for i in xrange(0, len(sigs)):
             signature = sigs[i].upper()
             status = self.status(signature)
             if status == None: continue
-            if i > 0: output.append(',')
+            if count > 0: output.append(',')
             output.append(status)
+            count += 1
         
         output.append(']}')
         return ''.join(output)
     
     def millis(self, timestamp):
         t = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-        return long((time.mktime(t.timetuple()) * 1000) + (t.microsecond / 1000))
+        return long((time.mktime(t.timetuple()) * 1000) + (t.microsecond / 1000.0))
     
     def status(self, signature):
         
@@ -55,16 +57,19 @@ class sql(object):
         output.append('{')
         output.append('"sig":"{0}"'.format(signature))
         output.append(',"success":{0}'.format('false' if val['failures'] else 'true'))
-        output.append(',"repeat":{0}'.format(self.failures(signature, val['failures'])))
+        output.append(',"repeat":{0}'.format(self.recurring_status(signature, bool(val['failures']))))
         output.append(',"speed":{0}'.format(val['speed']))
         output.append(',"aspeed":{0}'.format(self.avg_speed(signature)))
         output.append(',"date":{0}'.format(self.millis(val['date'])))
         output.append('}')
         return ''.join(output)
     
-    def failures(self, signature, failures):
+    def recurring_status(self, signature, failing):
         
-        failure_check = '=' if failures else '!='
+        signature = signature.upper()
+        
+        # if there are failures, we want to find the last success
+        failure_check = '=' if failing else '!='
         
         self.cursor.execute("SELECT\
             COUNT(id) as count\
@@ -107,19 +112,23 @@ class sql(object):
     
     def avg_speed(self, signature):
         
+        signature = signature.upper()
+        
         self.cursor.execute("SELECT\
             count,\
             duration\
             from {table}\
             where signature = :signature\
-            and date >= date('now', '-24 hour');".format(
+            and date >= date((SELECT MAX(date)\
+                FROM {table}\
+                WHERE signature = :signature), '-24 hour');".format(
             **{'table':settings.DB_TABLE}),
             {'signature':signature})
         
         samples = []
         
         for row in self.cursor.fetchall():
-            samples.append((row['duration'] / 1000) / row['count'])
+            samples.append((row['duration'] / 1000.0) / row['count'])
         
         outliers = self.outliers(samples)
         lr = outliers[0]
@@ -135,6 +144,8 @@ class sql(object):
         return '%01.2f' % (sum(results) / result_count)
     
     def last_checkin(self, signature):
+        
+        signature = signature.upper()
         
         self.cursor.execute("SELECT\
             (strftime('%s', 'now') - strftime('%s', date)) as time_since,\
@@ -163,11 +174,13 @@ class sql(object):
         result['count'] = row['count']
         result['failures'] = row['failures']
         result['time_since'] = row['time_since']
-        result['speed'] = '%01.2f' % ((row['duration'] / 1000) / row['count'])
+        result['speed'] = '%01.2f' % ((row['duration'] / 1000.0) / row['count'])
         return result
     
     def first_failure(self, signature):
         
+        signature = signature.upper()
+        
         self.cursor.execute("SELECT\
             MIN(date) as date\
             FROM {table}\
@@ -178,11 +191,13 @@ class sql(object):
         
         row = self.cursor.fetchone()
         
-        if not (fetched and row['date']): return 0
+        if row is None or row['date'] is None: return 0
         return datetime.now() - datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
     
     def last_failure(self, signature):
         
+        signature = signature.upper()
+        
         self.cursor.execute("SELECT\
             MAX(date) as date\
             FROM {table}\
@@ -193,10 +208,12 @@ class sql(object):
         
         row = self.cursor.fetchone()
         
-        if not (fetched and row['date']): return 0
+        if row is None or row['date'] is None: return 0
         return datetime.now() - datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
     
     def first_success(self, signature):
+        
+        signature = signature.upper()
         
         self.cursor.execute("SELECT\
             MIN(date) as date\
@@ -208,10 +225,12 @@ class sql(object):
         
         row = self.cursor.fetchone()
         
-        if not (fetched and row['date']): return 0
+        if row is None or row['date'] is None: return 0
         return datetime.now() - datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
     
     def last_success(self, signature):
+        
+        signature = signature.upper()
         
         self.cursor.execute("SELECT\
             MAX(date) as date\
@@ -223,13 +242,14 @@ class sql(object):
         
         row = self.cursor.fetchone()
         
-        if not (fetched and row['date']): return 0
+        if row is None or row['date'] is None: return 0
         return datetime.now() - datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
     
     def results(self, signature):
         
+        signature = signature.upper()
+        
         row['success_day'] = self.sla(signature, 'DAY')
-        #row['success_month'] = self.sla(signature, 'MONTH')
         
         year = self.sla(signature, 'YEAR')
         row['success_year'] = year[0]
@@ -240,6 +260,8 @@ class sql(object):
         return row
     
     def sla(self, signature, time_span):
+        
+        signature = signature.upper()
         
         self.cursor.execute("SELECT\
             SUM(successes) as successes,\
@@ -256,7 +278,7 @@ class sql(object):
         
         row = self.cursor.fetchone()
         
-        success_rate = (row['successes'] / (row['successes'] + row['failures'])) * 100
+        success_rate = (row['successes'] / float(row['successes'] + row['failures'])) * 100
         result = round(success_rate, 2 if success_rate >= 99 or success_rate <= 1 else 0)
         
         if 'YEAR' != time_span: return result
@@ -268,10 +290,10 @@ class sql(object):
     
     def get_timestamp(self, date_diff):
         
-        MINUTE = 60
-        HOUR = MINUTE * 60
-        DAY = HOUR * 24
-        YEAR = DAY * 365
+        MINUTE = 60.0
+        HOUR = MINUTE * 60.0
+        DAY = HOUR * 24.0
+        YEAR = DAY * 365.0
         
         years = floor(date_diff / YEAR)
         date_diff -= years * YEAR

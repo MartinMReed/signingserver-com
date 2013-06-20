@@ -4,9 +4,9 @@
 import os
 
 # accepted signatures
-VALID_SIG = 'rrt,rbb,rcr,pbk'
+VALID_SIG = 'rrt,rbb,rcr,rcc,pbk'
 VALID_CHART_SIG = '%s,all' % VALID_SIG
-VALID_CHART_SIG_COMP = 'rrt,rbb,rcr,all'
+VALID_CHART_SIG_COMP = 'rrt,rbb,rcr,rcc,all'
 
 # apikey for submit.php
 SUBMISSION_KEY = ''

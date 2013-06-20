@@ -32,8 +32,12 @@ def create_table(directory):
         connection = sqlite3.connect(database_file)
         cursor = connection.cursor()
         cursor.execute(statement)
-#        cursor.execute("insert into stats values (1, CURRENT_TIMESTAMP, 'RCR', 10, 5000, 10, 0, 4000, 0)")
-#        connection.commit()
+#        cursor.execute("insert into stats values (id, date, signature, count, size, successes, failures, duration, retries)")
+        cursor.execute("insert into stats values (1, CURRENT_TIMESTAMP, 'RCR', 10, 5000, 10, 0, 4567, 0)")
+        cursor.execute("insert into stats values (2, CURRENT_TIMESTAMP, 'RCC', 10, 5000, 10, 0, 3210, 0)")
+        cursor.execute("insert into stats values (3, CURRENT_TIMESTAMP, 'RCR', 10, 5000, 0, 10, 3765, 0)")
+        cursor.execute("insert into stats values (4, CURRENT_TIMESTAMP, 'RCR', 10, 5000, 10, 0, 3897, 0)")
+        connection.commit()
         return True
     except:
         return False
