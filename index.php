@@ -21,7 +21,7 @@ require("include/common_sql.php");
     <hr>
     <?php show_log('RCC', 'Crypto Certicom') ?><br />
     <hr>
-    <?php show_log('PBK', 'RDK/PBDT - PlayBook / BB10') ?><br />
+    <?php show_log('PBK', 'RDK/PBDT - BlackBerry 10') ?><br />
     <hr>
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
     Developer support( <a href="http://supportforums.blackberry.com/t5/Application-Platforms/ct-p/app_plat"><b>Forums</b></a> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
