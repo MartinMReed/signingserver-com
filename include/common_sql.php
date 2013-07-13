@@ -245,6 +245,10 @@ function sla($key, $time_span)
     $success_rate = ($success / ($success + $failure)) * 100;
     $result = round($success_rate, ($success_rate >= 99 || $success_rate <= 1) ? 2 : 0);
     
+    if ($success_rate != 100 && $result == 100) {
+        $result = 99.99;
+    }
+    
     if (strcmp("YEAR", $time_span) != 0) {
         return $result;
     }
