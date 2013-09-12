@@ -14,19 +14,19 @@ require("include/common_sql.php");
   </head>
   <body>
     <?php show_log('RRT', 'RIM Runtime') ?><br />
-    <hr>
+    <hr color="#EEEEEE">
     <?php show_log('RBB', 'RIM Blackberry Apps') ?><br />
-    <hr>
+    <hr color="#EEEEEE">
     <?php show_log('RCR', 'RIM Crypto') ?><br />
-    <hr>
+    <hr color="#EEEEEE">
     <?php show_log('RCC', 'Crypto Certicom') ?><br />
-    <hr>
+    <hr color="#EEEEEE">
     <?php show_log('PBK', 'RDK/PBDT - BlackBerry 10') ?><br />
-    <hr>
+    <hr color="#EEEEEE">
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
     Developer support( <a href="http://supportforums.blackberry.com/t5/Application-Platforms/ct-p/app_plat"><b>Forums</b></a> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
     See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.
-    <hr>
+    <hr color="#EEEEEE">
     <a href="http://twitter.com/SigningServer" title="@SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/martinmreed/signingserver-com" title="Source on GitHub"><img src="github_30.png"></a> <a href="stats.sql" title="Download Database"><img src="sql_30.png"></a>
   </body>
 </html>
@@ -39,11 +39,12 @@ function show_log($key, $name)
 	$green = '#03C03C';
 	$red = '#C23B22';
 	$blue = '#009ACD';
-	
+        $gray = '868686';
+        
         if ($pbk) {
-                echo "<font size=\"5\"><b>$name</b></font> <font size=\"3\">(<font size=\"3\" color=\"$red\"><b>beta</b></font> / non-bbid)</font>";
+                echo "<font size=\"5\"><b>$name</b></font> <font size=\"3\">(<font color=\"$red\"><b>beta</b></font> / <font color=\"$gray\"><b>legacy</b></font>)</font>";
         } else {
-                echo "<font size=\"5\"><b>$key - $name</b></font> <font size=\"3\">(non-bbid)</font>";
+                echo "<font size=\"5\"><b>$key - $name</b></font> <font size=\"3\">(<font color=\"$gray\"><b>legacy</b></font>)</font>";
         }
 
         $last_checkin = last_checkin($key);
@@ -66,6 +67,7 @@ function show_log($key, $name)
 		if ($uptime) {
 			echo "<br />uptime( ";
 			echo get_timestamp($uptime);
+			echo " / ";
 		}
 	}
 	else
@@ -76,17 +78,13 @@ function show_log($key, $name)
 			echo "<br />downtime( ";
 			echo "<font color=\"$red\">";
 			echo get_timestamp($downtime);
-			echo "</font>";
+			echo "</font> / ";
 		}
 	}
 	
 	if (!$uptime && !$downtime)
 	{
 		echo "<br />uptime( ";
-	}
-	else
-	{
-		echo " / ";
 	}
 	
 	$health_color = $success_year > 95 ? $green : $red;
