@@ -212,7 +212,7 @@ function last_success($key)
 
 function results($key)
 {
-    $row['success_day'] = sla($key, "DAY");
+    //$row['success_day'] = sla($key, "DAY");
     
     $year = sla($key, "YEAR");
     $row['success_year'] = $year[0];
