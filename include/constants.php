@@ -22,6 +22,7 @@ define("OAUTH_TOKEN", "");
 define("OAUTH_SECRET", "");
 
 // number of failures before it goes to twitter
+<<<<<<< HEAD
 define("TWEETER_THRESHOLD", "3");
 <<<<<<< HEAD
 =======
@@ -53,5 +54,8 @@ define("TWEETER_THRESHOLD", "3");
 >>>>>>> 7c963a2... Update constants.php
 =======
 >>>>>>> c86e1e4... formatting
+=======
+define("TWEETER_THRESHOLD", "2");
+>>>>>>> eac2697... Update constants.php
 
 ?>
