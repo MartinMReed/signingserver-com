@@ -3,6 +3,11 @@
 require("include/mysql_connect.php");
 require("include/common_sql.php");
 
+$green = '#03C03C';
+$red = '#C23B22';
+$blue = '#009ACD';
+$gray = '868686';
+
 ?>
 <html>
   <head>
@@ -25,7 +30,8 @@ require("include/common_sql.php");
     <hr color="#EEEEEE">
     Having trouble with code signing? See <a href="https://developer.blackberry.com/CodeSigningHelp">here</a> for common issues and <a href="https://developer.blackberry.com/CodeSigningHelp">Code Signing Support</a>.<br />
     Developer support( <a href="http://supportforums.blackberry.com/t5/Application-Platforms/ct-p/app_plat"><b>Forums</b></a> / <a href="http://twitter.com/BlackBerryDev"><b>@BlackBerryDev</b></a> / <b>1-877-255-2377</b> )<br />
-    See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.
+    See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.<br />
+    <font color="<?php echo $gray ?>"><b>legacy</b></font>: Not using <a href="http://devblog.blackberry.com/2013/08/code-signing-keys-be-gone-welcome-blackberry-id">BlackBerry ID</a><br />
     <hr color="#EEEEEE">
     <a href="http://twitter.com/SigningServer" title="@SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/martinmreed/signingserver-com" title="Source on GitHub"><img src="github_30.png"></a> <a href="stats.sql" title="Download Database"><img src="sql_30.png"></a>
   </body>
@@ -34,13 +40,13 @@ require("include/common_sql.php");
 
 function show_log($key, $name)
 {
+	global $green;
+	global $red;
+	global $blue;
+	global $gray;
+	
 	$pbk = strcasecmp($key, 'pbk') == 0;
 	
-	$green = '#03C03C';
-	$red = '#C23B22';
-	$blue = '#009ACD';
-        $gray = '868686';
-        
         if ($pbk) {
                 echo "<font size=\"5\"><b>$name</b></font> <font size=\"3\">(<font color=\"$red\"><b>beta</b></font> / <font color=\"$gray\"><b>legacy</b></font>)</font>";
         } else {
