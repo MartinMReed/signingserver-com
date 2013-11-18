@@ -15,6 +15,7 @@ define("DB_PASSWD", "");
 define("DB_NAME", "");
 define("DB_TABLE", "");
 
+<<<<<<< HEAD
 // twitter connection
 define("CONSUMER_KEY", "");
 define("CONSUMER_SECRET", "");
@@ -58,4 +59,6 @@ define("TWEETER_THRESHOLD", "3");
 define("TWEETER_THRESHOLD", "2");
 >>>>>>> eac2697... Update constants.php
 
+=======
+>>>>>>> 1d1d674... Removing Twitter support
 ?>

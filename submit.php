@@ -20,9 +20,6 @@ if (!$results) exit_with_error_code(8);
 
 require("include/mysql_connect.php");
 require("include/common_sql.php");
-require("tweet/twitteroauth.php");
-
-tweet_results($results);
 
 $signerIds = array();
 
@@ -39,7 +36,6 @@ function exit_with_error_code($exitCode)
 {
 <<<<<<< HEAD
 	header("HTTP/1.0 400 Bad Request (".$exitCode.")");
-	echo $exitCode;
 	exit($exitCode);
 =======
   $controls = array( "http://google.com/robots.txt",
@@ -76,6 +72,7 @@ function exit_with_error_code($exitCode)
 >>>>>>> 5f2c0a2... Update submit.php
 }
 
+<<<<<<< HEAD
 function tweet_results($results)
 {
 	$now_succeeding = array();
@@ -170,6 +167,8 @@ function sort_result($result, &$now_succeeding, &$now_failing)
 	}
 }
 
+=======
+>>>>>>> 1d1d674... Removing Twitter support
 function store_result($result)
 {
 	global $mysqli;

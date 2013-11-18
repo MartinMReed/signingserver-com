@@ -33,7 +33,7 @@ $gray = '868686';
     See <a href="https://www.blackberry.com/SignedKeys">here</a> for more information about BlackBerry <a href="https://www.blackberry.com/SignedKeys">Code Signing Keys</a>.<br />
     <font color="<?php echo $gray ?>"><b>legacy</b></font>: Not using <a href="http://devblog.blackberry.com/2013/08/code-signing-keys-be-gone-welcome-blackberry-id">BlackBerry ID</a><br />
     <hr color="#EEEEEE">
-    <a href="http://twitter.com/SigningServer" title="@SigningServer"><img src="twitter_30.png"></a> <a href="https://github.com/martinmreed/signingserver-com" title="Source on GitHub"><img src="github_30.png"></a> <a href="stats.sql" title="Download Database"><img src="sql_30.png"></a>
+    <a href="https://github.com/martinmreed/signingserver-com" title="Source on GitHub"><img src="github_30.png"></a> <a href="stats.sql" title="Download Database"><img src="sql_30.png"></a>
   </body>
 </html>
 <?php
