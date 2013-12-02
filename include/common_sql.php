@@ -231,12 +231,8 @@ function sla($key, $time_span)
         SUM(failures),
         MIN(date)
         FROM ".DB_TABLE."
-        WHERE signature = ?
-        AND date >= (SELECT MIN(date)
-            FROM ".DB_TABLE."
-            WHERE signature = ?
-            AND date >= DATE_SUB(NOW(), INTERVAL 1 $time_span));");
-    $statement->bind_param("ss", $key, $key);
+        WHERE signature = ?;");
+    $statement->bind_param("s", $key);
     $statement->execute();
     $statement->bind_result($success, $failure, $date);
     $fetched = $statement->fetch();
@@ -256,11 +252,18 @@ function sla($key, $time_span)
     $date1 = new DateTime();
     $date2 = new DateTime($date);
     $diff = $date1->diff($date2);
-    $date = $diff->format('%mmo %dd');
+    $date = $diff->format('%yy %mmo %dd');
     
-    if (strstr($date, "0mo") != false) {
-        $date = substr($date, 4);
-    } else if (strstr($date, " 0d") != false) {
+    if (strstr($date, " 0mo") != false) {
+        $noMonths = strpos($date, " 0mo");
+        $date = substr($date, 0, $noMonths) . substr($date, $noMonths + 4);
+    }
+    
+    if (strpos($date, "0y") === 0) {
+        $date = substr($date, 3);
+    }
+    
+    if (strstr($date, " 0d") != false) {
         $date = substr($date, 0, strlen($date) - 3);
     }
     
